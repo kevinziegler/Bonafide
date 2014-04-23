@@ -27,7 +27,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+app.use(express.session({
+    secret : "thisIsATemporarySecret",
+    cookie: { httpOnly : true, secure: true {
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.csrf());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(function (req, res, next) {
+    res.locals.csrftoken = req.session._csrf;
+    next();
+});
 
 app.use('/', routes);
 app.use('/auth', auth);
