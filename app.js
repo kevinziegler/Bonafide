@@ -5,10 +5,16 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var passport = rquire('passport');
+var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
 mongoose.connect('mongodb://localhost/bonafide');
+
+var User = require('./models/User');
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 var routes = require('./routes/index'),
     auth = require('./routes/auth'),
@@ -27,20 +33,21 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(express.session({
+/* app.use(express.session({
     secret : "thisIsATemporarySecret",
-    cookie: { httpOnly : true, secure: true {
-}));
+    cookie: { httpOnly : true, secure: true }
+}));*/
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.csrf());
+//app.use(express.csrf());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/*
 app.use(function (req, res, next) {
     res.locals.csrftoken = req.session._csrf;
     next();
 });
-
+*/
 app.use('/', routes);
 app.use('/auth', auth);
 app.use('/certificates', certificates);

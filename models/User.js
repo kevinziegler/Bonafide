@@ -33,4 +33,4 @@ userSchema.virtual('name.reverse').get(function() {
     return this.name.last + ', ' + this.name.first;
 });
 
-exports.User = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema);
