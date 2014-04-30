@@ -12,7 +12,7 @@ router.post('/login', passport.authenticate('local', {
 }));
 
 router.get('/logout', function(req, res) {
-    // TODO: Terminate user's session
+    req.logout();
     res.redirect('/');
 });
 
