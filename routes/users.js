@@ -18,7 +18,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/register', function(req, res) {
-    res.render('register', {});
+    res.render('register', {title : 'Create an Account'});
 });
 
 router.post('/register', function(req, res) {
